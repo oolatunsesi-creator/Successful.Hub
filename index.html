@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ShopifySuccessHub – Ecommerce Growth Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --dark:#1a1f2e;--darker:#0d1117;--green:#4caf50;--green-light:#6fcf73;
+  --green-dark:#2e7d32;--white:#fff;--gray:#8a95a3;--card-bg:#161b27;--border:rgba(76,175,80,0.18);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Manrope',sans-serif;background:var(--darker);color:var(--white);overflow-x:hidden;}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;width:12px;height:12px;background:var(--green);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform 0.1s;mix-blend-mode:screen;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:2px solid rgba(76,175,80,0.5);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:left 0.12s ease,top 0.12s ease,width 0.2s,height 0.2s;}
+body:hover #cursor{opacity:1;}
+
+/* ── PROGRESS BAR ── */
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#2e7d32,#4caf50,#6fcf73);z-index:9998;width:0%;box-shadow:0 0 12px var(--green),0 0 24px rgba(76,175,80,0.4);}
+
+/* ── PARTICLES CANVAS ── */
+#canvas-bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;z-index:99999;background:var(--darker);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s,visibility 0.6s;}
+#loader.hidden{opacity:0;visibility:hidden;}
+.loader-logo{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--green);letter-spacing:0.05em;animation:loaderPulse 1s ease-in-out infinite;}
+.loader-bar{width:200px;height:3px;background:rgba(76,175,80,0.2);border-radius:3px;margin-top:24px;overflow:hidden;}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--green-dark),var(--green-light));border-radius:3px;animation:loaderFill 1.8s ease forwards;}
+@keyframes loaderPulse{0%,100%{opacity:1;text-shadow:0 0 20px rgba(76,175,80,0.5)}50%{opacity:0.6;text-shadow:0 0 60px rgba(76,175,80,1)}}
+@keyframes loaderFill{from{width:0%}to{width:100%}}
+
+/* ── FLOATING BADGE ── */
+#float-badge{position:fixed;bottom:28px;right:24px;z-index:999;background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border-radius:50px;padding:13px 24px;font-weight:800;font-size:0.85rem;cursor:pointer;letter-spacing:0.04em;box-shadow:0 6px 32px rgba(76,175,80,0.5),0 0 0 0 rgba(76,175,80,0.4);animation:badgePulse 2.5s ease-in-out infinite;display:flex;align-items:center;gap:8px;transition:transform 0.2s;}
+#float-badge:hover{transform:scale(1.1) translateY(-3px);}
+@keyframes badgePulse{0%,100%{box-shadow:0 6px 32px rgba(76,175,80,0.5),0 0 0 0 rgba(76,175,80,0.4)}50%{box-shadow:0 6px 32px rgba(76,175,80,0.5),0 0 0 14px rgba(76,175,80,0)}}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:100px;right:24px;background:var(--card-bg);border:1px solid var(--green);border-radius:14px;padding:14px 20px;font-size:0.88rem;font-weight:700;z-index:9999;transform:translateX(220px);opacity:0;transition:all 0.45s cubic-bezier(0.34,1.56,0.64,1);max-width:290px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.4);}
+#toast.show{transform:translateX(0);opacity:1;}
+
+/* ── POPUP ── */
+#audit-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,8,16,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;animation:fadeIn 0.4s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+#audit-popup{background:linear-gradient(145deg,#161b27,#1e2535);border:1px solid rgba(76,175,80,0.4);border-radius:28px;padding:52px 44px;max-width:520px;width:92%;position:relative;text-align:center;box-shadow:0 0 100px rgba(76,175,80,0.2),0 40px 80px rgba(0,0,0,0.7);animation:popupIn 0.5s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes popupIn{from{transform:translateY(80px) scale(0.9);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.popup-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,0.07);border:none;color:var(--gray);width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s,color 0.2s;}
+.popup-close:hover{background:var(--green);color:#fff;}
+.popup-badge{display:inline-block;background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.3);border-radius:50px;padding:6px 18px;font-size:0.75rem;font-weight:800;color:var(--green-light);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;}
+#audit-popup h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1;margin-bottom:14px;}
+#audit-popup h2 span{color:var(--green);text-shadow:0 0 20px rgba(76,175,80,0.5);}
+#audit-popup p{color:var(--gray);font-size:0.93rem;line-height:1.7;margin-bottom:28px;}
+.popup-form{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.popup-form input{background:rgba(255,255,255,0.05);border:1px solid rgba(76,175,80,0.2);border-radius:10px;padding:13px 18px;color:#fff;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.popup-form input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(76,175,80,0.1);}
+.popup-submit{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border:none;padding:15px;border-radius:10px;font-family:'Manrope',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;letter-spacing:0.04em;box-shadow:0 4px 24px rgba(76,175,80,0.4);transition:transform 0.15s,box-shadow 0.2s;}
+.popup-submit:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(76,175,80,0.5);}
+.popup-skip{font-size:0.8rem;color:var(--gray);cursor:pointer;text-decoration:underline;transition:color 0.2s;}
+.popup-skip:hover{color:#fff;}
+.popup-trust{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;}
+.popup-trust span{font-size:0.78rem;color:var(--gray);}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(13,17,23,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:70px;transition:all 0.3s;}
+nav.scrolled{background:rgba(13,17,23,0.98);box-shadow:0 4px 40px rgba(0,0,0,0.5);}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo img{height:42px;object-fit:contain;}
+.nav-logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--green);text-shadow:0 0 20px rgba(76,175,80,0.4);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:0.84rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--green);transition:width 0.3s;border-radius:2px;}
+.nav-links a:hover{color:var(--green-light);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border:none;padding:10px 24px;border-radius:8px;font-family:'Manrope',sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;letter-spacing:0.05em;transition:transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(76,175,80,0.3);position:relative;overflow:hidden;}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(76,175,80,0.5);}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding:120px 5% 80px;position:relative;overflow:hidden;}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1200px;margin:0 auto;width:100%;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.25);border-radius:50px;padding:8px 20px;font-size:0.78rem;font-weight:800;color:var(--green-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:28px;}
+.hero-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:dotPulse 2s infinite;box-shadow:0 0 8px var(--green);}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:0.5}}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,6.5rem);line-height:0.92;letter-spacing:0.02em;margin-bottom:28px;}
+.hero-title .line1{display:block;animation:slideInLeft 0.8s ease both;}
+.hero-title .line2{display:block;color:var(--green);text-shadow:0 0 40px rgba(76,175,80,0.6),0 0 80px rgba(76,175,80,0.2);animation:slideInLeft 0.8s 0.15s ease both;}
+.hero-title .line3{display:block;animation:slideInLeft 0.8s 0.3s ease both;}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:translateX(0)}}
+.hero-sub{font-size:1.05rem;color:var(--gray);line-height:1.75;max-width:480px;margin-bottom:40px;animation:fadeUp 1s 0.5s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp 1s 0.7s ease both;}
+.btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border:none;padding:15px 34px;border-radius:10px;font-family:'Manrope',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;letter-spacing:0.04em;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 6px 28px rgba(76,175,80,0.4);position:relative;overflow:hidden;}
+.btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.5s;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(76,175,80,0.5);}
+.btn-primary:hover::before{left:100%;}
+.btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.15);padding:15px 34px;border-radius:10px;font-family:'Manrope',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;letter-spacing:0.04em;text-decoration:none;transition:border-color 0.2s,color 0.2s,background 0.2s;}
+.btn-outline:hover{border-color:var(--green);color:var(--green-light);background:rgba(76,175,80,0.06);}
+.hero-image{position:relative;animation:fadeUp 1s 0.4s ease both;}
+.hero-image img{width:100%;border-radius:20px;box-shadow:0 30px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(76,175,80,0.15);animation:heroFloat 6s ease-in-out infinite;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(0.5deg)}}
+.hero-image::before{content:'';position:absolute;inset:-2px;border-radius:22px;background:linear-gradient(135deg,rgba(76,175,80,0.3),transparent,rgba(76,175,80,0.1));z-index:-1;animation:borderGlow 4s ease-in-out infinite;}
+@keyframes borderGlow{0%,100%{opacity:0.5}50%{opacity:1}}
+.hero-stats{display:flex;gap:32px;margin-top:48px;flex-wrap:wrap;animation:fadeUp 1s 0.9s ease both;}
+.stat{display:flex;flex-direction:column;gap:4px;position:relative;}
+.stat::after{content:'';position:absolute;bottom:-8px;left:0;width:30px;height:2px;background:var(--green);border-radius:2px;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--green);line-height:1;text-shadow:0 0 20px rgba(76,175,80,0.4);}
+.stat-label{font-size:0.75rem;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+
+/* ── MARQUEE ── */
+.marquee-wrap{background:rgba(76,175,80,0.07);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;position:relative;z-index:2;}
+.marquee-track{display:flex;gap:0;animation:marquee 25s linear infinite;width:max-content;}
+.marquee-item{display:flex;align-items:center;gap:12px;padding:0 36px;font-size:0.82rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;}
+.marquee-item .dot{width:6px;height:6px;background:var(--green);border-radius:50%;flex-shrink:0;}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── TRUST BANNER ── */
+.trust-banner{background:linear-gradient(135deg,rgba(26,42,26,0.8),rgba(30,37,53,0.8));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:36px 5%;backdrop-filter:blur(10px);}
+.trust-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+.trust-count{display:flex;align-items:center;gap:24px;}
+.trust-num{font-family:'Bebas Neue',sans-serif;font-size:4.5rem;color:var(--green);line-height:1;text-shadow:0 0 30px rgba(76,175,80,0.4);}
+.trust-label{font-size:0.8rem;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;}
+.trust-stars{color:#f4c430;font-size:1.4rem;letter-spacing:4px;margin-top:6px;}
+.trust-divider{width:1px;height:70px;background:var(--border);}
+.trust-platforms{display:flex;gap:14px;}
+.platform-pill{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:12px 20px;transition:border-color 0.2s,transform 0.2s;}
+.platform-pill:hover{border-color:var(--green);transform:translateY(-2px);}
+.platform-pill .p-icon{font-size:1.4rem;}
+.platform-pill .p-name{font-size:0.75rem;color:var(--gray);font-weight:700;}
+.platform-pill .p-score{font-size:1rem;font-weight:800;}
+.trust-cta{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border:none;padding:16px 32px;border-radius:12px;font-family:'Manrope',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;letter-spacing:0.04em;box-shadow:0 6px 28px rgba(76,175,80,0.4);transition:transform 0.2s,box-shadow 0.2s;white-space:nowrap;}
+.trust-cta:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(76,175,80,0.5);}
+
+/* ── SECTIONS ── */
+section{padding:110px 5%;position:relative;}
+.section-label{font-size:0.75rem;font-weight:900;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.section-label::before{content:'';width:28px;height:2px;background:var(--green);border-radius:2px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.6rem,4.5vw,4rem);line-height:0.95;margin-bottom:20px;}
+.section-sub{color:var(--gray);font-size:1rem;line-height:1.75;max-width:560px;}
+.section-header{margin-bottom:72px;}
+.section-header.centered{text-align:center;}
+.section-header.centered .section-label{justify-content:center;}
+.section-header.centered .section-label::before{display:none;}
+.section-header.centered .section-sub{margin:0 auto;}
+
+/* ── SERVICES ── */
+#services{background:linear-gradient(180deg,var(--darker) 0%,#0f1520 100%);}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;max-width:1200px;margin:0 auto;}
+.service-card{background:linear-gradient(145deg,#161b27,#1a2030);border:1px solid var(--border);border-radius:20px;padding:40px 34px;transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;transform-style:preserve-3d;}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green-dark),var(--green-light));opacity:0;transition:opacity 0.3s;}
+.service-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(76,175,80,0.06),transparent 60%);opacity:0;transition:opacity 0.3s;}
+.service-card:hover{transform:translateY(-8px);border-color:rgba(76,175,80,0.5);box-shadow:0 20px 60px rgba(76,175,80,0.12);}
+.service-card:hover::before,.service-card:hover::after{opacity:1;}
+.service-icon{width:60px;height:60px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(76,175,80,0.05));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin-bottom:28px;border:1px solid rgba(76,175,80,0.15);transition:transform 0.4s;}
+.service-card:hover .service-icon{transform:rotate(360deg) scale(1.1);}
+.service-card h3{font-size:1.2rem;font-weight:800;margin-bottom:14px;}
+.service-card p{font-size:0.9rem;color:var(--gray);line-height:1.75;}
+
+/* ── TEAM ── */
+#team{background:linear-gradient(180deg,#0f1520 0%,var(--darker) 100%);}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:28px;max-width:1200px;margin:0 auto;}
+.team-card{background:linear-gradient(145deg,#161b27,#1a2030);border:1px solid var(--border);border-radius:24px;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;transform-style:preserve-3d;}
+.team-card:hover{transform:translateY(-10px);box-shadow:0 24px 70px rgba(76,175,80,0.15);}
+.team-avatar{height:280px;overflow:hidden;position:relative;background:#131820;}
+.team-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform 0.5s ease;}
+.team-card:hover .team-avatar img{transform:scale(1.08);}
+.team-avatar-overlay{position:absolute;inset:0;background:linear-gradient(transparent 45%,#161b27);}
+.team-avatar-emoji{height:280px;background:linear-gradient(135deg,#1a2a1a,#2a3347);display:flex;align-items:center;justify-content:center;font-size:5rem;}
+.team-info{padding:28px;}
+.team-info h3{font-size:1.15rem;font-weight:900;margin-bottom:6px;}
+.team-role{font-size:0.78rem;color:var(--green-light);font-weight:800;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;}
+.team-bio{font-size:0.87rem;color:var(--gray);line-height:1.7;margin-bottom:22px;}
+.team-socials{display:flex;gap:10px;}
+.social-btn{width:36px;height:36px;border-radius:10px;background:rgba(76,175,80,0.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.9rem;text-decoration:none;color:var(--gray);transition:background 0.2s,color 0.2s,transform 0.2s;}
+.social-btn:hover{background:var(--green);color:#fff;transform:translateY(-3px);}
+.ceo-card{border-color:rgba(76,175,80,0.6) !important;animation:ceoPulse 3s ease-in-out infinite;}
+@keyframes ceoPulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,0.3)}50%{box-shadow:0 0 0 16px rgba(76,175,80,0)}}
+.ceo-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;font-size:0.68rem;font-weight:900;padding:6px 14px;border-radius:50px;letter-spacing:0.1em;text-transform:uppercase;z-index:2;box-shadow:0 4px 16px rgba(76,175,80,0.5);}
+
+/* ── TESTIMONIALS ── */
+#testimonials{background:linear-gradient(180deg,var(--darker) 0%,#0f1520 100%);}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:24px;max-width:1200px;margin:0 auto;}
+.testimonial-card{background:linear-gradient(145deg,#161b27,#1a2030);border:1px solid var(--border);border-radius:20px;padding:40px;transition:transform 0.3s,box-shadow 0.3s;}
+.testimonial-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.t-stars{color:#f4c430;font-size:1rem;letter-spacing:3px;margin-bottom:22px;}
+.t-quote{font-size:1.6rem;color:var(--green);opacity:0.4;line-height:1;margin-bottom:12px;}
+.t-text{font-size:0.95rem;color:#bcc8d8;line-height:1.8;margin-bottom:30px;font-style:italic;}
+.t-author{display:flex;align-items:center;gap:14px;}
+.t-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--green-dark),var(--green));display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;color:#fff;flex-shrink:0;}
+.t-name{font-size:0.92rem;font-weight:800;}
+.t-title{font-size:0.78rem;color:var(--gray);margin-top:2px;}
+
+/* ── POST REVIEW ── */
+#post-review{background:linear-gradient(180deg,#0f1520 0%,var(--darker) 100%);}
+.review-post-inner{max-width:740px;margin:0 auto;}
+.star-picker{display:flex;gap:10px;margin-bottom:8px;}
+.star-btn{font-size:2.2rem;cursor:pointer;color:#2a3040;background:none;border:none;transition:color 0.15s,transform 0.2s;}
+.star-btn.active,.star-btn:hover{color:#f4c430;transform:scale(1.2);}
+.review-form{display:flex;flex-direction:column;gap:18px;}
+.review-form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.fg{display:flex;flex-direction:column;gap:8px;}
+.fg label{font-size:0.78rem;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;}
+.fg input,.fg textarea{background:#161b27;border:1px solid var(--border);border-radius:12px;padding:14px 18px;color:#fff;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.fg input:focus,.fg textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(76,175,80,0.1);}
+.fg textarea{resize:vertical;min-height:120px;}
+.review-submit{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border:none;padding:16px 36px;border-radius:12px;font-family:'Manrope',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;letter-spacing:0.04em;box-shadow:0 6px 28px rgba(76,175,80,0.35);transition:transform 0.2s,box-shadow 0.2s;}
+.review-submit:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(76,175,80,0.5);}
+#user-reviews-list{margin-top:48px;display:flex;flex-direction:column;gap:18px;}
+.user-review-card{background:linear-gradient(145deg,#161b27,#1a2030);border:1px solid var(--border);border-radius:16px;padding:26px 30px;animation:cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ur-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.ur-name{font-weight:900;font-size:0.97rem;}
+.ur-company{font-size:0.8rem;color:var(--gray);margin-top:3px;}
+.ur-stars{color:#f4c430;font-size:0.92rem;letter-spacing:2px;}
+.ur-text{font-size:0.9rem;color:#b0bac8;line-height:1.75;font-style:italic;}
+.ur-date{font-size:0.73rem;color:#3a4558;margin-top:10px;}
+
+/* ── CONTACT ── */
+#contact{background:linear-gradient(180deg,var(--darker) 0%,#0a0d14 100%);}
+.contact-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.contact-info h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.6rem,4vw,4rem);margin-bottom:20px;line-height:0.95;}
+.contact-info p{color:var(--gray);font-size:0.95rem;line-height:1.75;margin-bottom:40px;}
+.contact-item{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px;}
+.contact-icon{width:48px;height:48px;min-width:48px;border-radius:12px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(76,175,80,0.05));border:1px solid rgba(76,175,80,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.contact-item-text span{display:block;font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;}
+.contact-item-text strong{font-size:0.95rem;font-weight:700;}
+.contact-item-text a{color:inherit;text-decoration:none;transition:color 0.2s;}
+.contact-item-text a:hover{color:var(--green-light);}
+.social-links-row{display:flex;gap:12px;margin-top:12px;}
+.social-link-btn{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;font-size:1.2rem;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;}
+.social-link-btn:hover{transform:translateY(-4px);}
+.ig-btn{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);box-shadow:0 4px 16px rgba(253,29,29,0.3);}
+.fb-btn{background:#1877f2;box-shadow:0 4px 16px rgba(24,119,242,0.3);}
+.gm-btn{background:#ea4335;box-shadow:0 4px 16px rgba(234,67,53,0.3);}
+.contact-form{display:flex;flex-direction:column;gap:18px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group label{font-size:0.78rem;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;}
+.form-group input,.form-group textarea,.form-group select{background:#161b27;border:1px solid var(--border);border-radius:12px;padding:14px 18px;color:#fff;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;appearance:none;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(76,175,80,0.1);}
+.form-group textarea{resize:vertical;min-height:140px;}
+.form-submit{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border:none;padding:16px 36px;border-radius:12px;font-family:'Manrope',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;letter-spacing:0.04em;box-shadow:0 6px 28px rgba(76,175,80,0.35);transition:transform 0.2s,box-shadow 0.2s;}
+.form-submit:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(76,175,80,0.5);}
+
+/* ── FOOTER ── */
+footer{background:#070a10;border-top:1px solid var(--border);padding:56px 5% 36px;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.footer-logo img{height:36px;object-fit:contain;}
+.footer-copy{font-size:0.82rem;color:var(--gray);}
+.footer-links{display:flex;gap:28px;}
+.footer-links a{font-size:0.82rem;color:var(--gray);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:var(--green-light);}
+
+/* ── ANIMATIONS ── */
+.fade-up{opacity:0;transform:translateY(36px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.slide-left{opacity:0;transform:translateX(-50px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.slide-right{opacity:0;transform:translateX(50px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.slide-left.visible,.slide-right.visible{opacity:1;transform:translateX(0);}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.25);transform:scale(0);animation:rippleAnim 0.7s linear;pointer-events:none;}
+@keyframes rippleAnim{to{transform:scale(5);opacity:0}}
+
+
+    /* ══ MAGNETIC BUTTONS ══ */
+    .btn-primary, .nav-cta, .trust-cta, .popup-submit {
+      transition: transform 0.2s cubic-bezier(0.23,1,0.32,1), box-shadow 0.2s;
+    }
+
+    /* ══ SPLIT TEXT ANIMATION ══ */
+    .split-char {
+      display: inline-block;
+      animation: charDrop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes charDrop {
+      from { opacity:0; transform: translateY(-40px) rotate(-8deg); }
+      to   { opacity:1; transform: translateY(0) rotate(0deg); }
+    }
+
+    /* ══ MORPHING HERO BG BLOB ══ */
+    .hero-blob {
+      position: absolute; z-index: 0; pointer-events: none;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      animation: blobMorph 10s ease-in-out infinite;
+      filter: blur(60px);
+    }
+    .blob1 { width:600px; height:600px; top:-100px; right:-150px; background:rgba(76,175,80,0.07); animation-delay:0s; }
+    .blob2 { width:400px; height:400px; bottom:-100px; left:-100px; background:rgba(76,175,80,0.05); animation-delay:-5s; }
+    @keyframes blobMorph {
+      0%,100% { border-radius:30% 70% 70% 30%/30% 30% 70% 70%; transform:scale(1) rotate(0deg); }
+      25%     { border-radius:58% 42% 75% 25%/76% 46% 54% 24%; transform:scale(1.05) rotate(5deg); }
+      50%     { border-radius:50% 50% 33% 67%/55% 27% 73% 45%; transform:scale(0.95) rotate(-5deg); }
+      75%     { border-radius:33% 67% 58% 42%/63% 68% 32% 37%; transform:scale(1.03) rotate(3deg); }
+    }
+
+    /* ══ SCROLL REVEAL — STAGGER ══ */
+    .stagger-child { opacity:0; transform:translateY(40px); transition:opacity 0.6s ease, transform 0.6s ease; }
+    .stagger-child.visible { opacity:1; transform:translateY(0); }
+
+    /* ══ GLITCH TITLE EFFECT ══ */
+    .glitch {
+      position: relative;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute; top:0; left:0; width:100%; height:100%;
+      font-family: inherit; font-size: inherit; color: inherit;
+    }
+    .glitch::before {
+      left: 2px; text-shadow: -2px 0 #f00; clip: rect(44px,450px,56px,0);
+      animation: glitch1 4s infinite linear alternate-reverse;
+    }
+    .glitch::after {
+      left: -2px; text-shadow: -2px 0 #0ff; clip: rect(44px,450px,56px,0);
+      animation: glitch2 4s infinite linear alternate-reverse;
+    }
+    @keyframes glitch1 {
+      0%{clip:rect(4px,9999px,80px,0);transform:skew(0.4deg)}
+      20%{clip:rect(90px,9999px,30px,0);transform:skew(0.1deg)}
+      40%{clip:rect(50px,9999px,20px,0);transform:skew(0.8deg)}
+      60%{clip:rect(20px,9999px,60px,0);transform:skew(0.2deg)}
+      80%{clip:rect(70px,9999px,10px,0);transform:skew(0.5deg)}
+      100%{clip:rect(10px,9999px,90px,0);transform:skew(0.3deg)}
+    }
+    @keyframes glitch2 {
+      0%{clip:rect(60px,9999px,30px,0);transform:skew(0.6deg)}
+      20%{clip:rect(20px,9999px,60px,0);transform:skew(0.3deg)}
+      40%{clip:rect(80px,9999px,10px,0);transform:skew(0.7deg)}
+      60%{clip:rect(10px,9999px,90px,0);transform:skew(0.1deg)}
+      80%{clip:rect(40px,9999px,50px,0);transform:skew(0.9deg)}
+      100%{clip:rect(70px,9999px,20px,0);transform:skew(0.2deg)}
+    }
+
+    /* ══ TYPEWRITER CURSOR ══ */
+    .typewriter::after {
+      content: '|';
+      color: var(--green);
+      animation: blink 0.8s step-end infinite;
+      margin-left: 2px;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ══ STATS FLIP COUNTER ══ */
+    .stat { perspective: 400px; }
+
+    /* ══ SECTION NUMBER ══ */
+    .section-num {
+      position: absolute; top: 60px; right: 5%;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 10rem; color: rgba(76,175,80,0.04);
+      line-height: 1; pointer-events: none; user-select: none;
+      z-index: 0;
+    }
+
+    /* ══ HOVER UNDERLINE LINKS ══ */
+    .nav-links a { overflow: hidden; }
+
+    /* ══ ANIMATED GRADIENT BORDER on CEO card ══ */
+    .ceo-card {
+      background: linear-gradient(#161b27,#161b27) padding-box,
+                  linear-gradient(135deg,#4caf50,#1a5c1a,#6fcf73,#2e7d32) border-box !important;
+      border: 2px solid transparent !important;
+      animation: ceoPulse 3s ease-in-out infinite, borderSpin 4s linear infinite;
+    }
+    @keyframes borderSpin {
+      0%   { background: linear-gradient(#161b27,#161b27) padding-box, linear-gradient(0deg,#4caf50,#1a5c1a,#6fcf73,#2e7d32) border-box; }
+      25%  { background: linear-gradient(#161b27,#161b27) padding-box, linear-gradient(90deg,#4caf50,#1a5c1a,#6fcf73,#2e7d32) border-box; }
+      50%  { background: linear-gradient(#161b27,#161b27) padding-box, linear-gradient(180deg,#4caf50,#1a5c1a,#6fcf73,#2e7d32) border-box; }
+      75%  { background: linear-gradient(#161b27,#161b27) padding-box, linear-gradient(270deg,#4caf50,#1a5c1a,#6fcf73,#2e7d32) border-box; }
+      100% { background: linear-gradient(#161b27,#161b27) padding-box, linear-gradient(360deg,#4caf50,#1a5c1a,#6fcf73,#2e7d32) border-box; }
+    }
+
+    /* ══ SCROLL INDICATOR ══ */
+    .scroll-indicator {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      z-index: 2; animation: fadeUp 1s 1.5s ease both;
+    }
+    .scroll-indicator span { font-size: 0.7rem; font-weight: 700; color: var(--gray); letter-spacing: 0.12em; text-transform: uppercase; }
+    .scroll-mouse { width: 24px; height: 38px; border: 2px solid rgba(76,175,80,0.4); border-radius: 12px; display: flex; justify-content: center; padding-top: 6px; }
+    .scroll-wheel { width: 4px; height: 8px; background: var(--green); border-radius: 2px; animation: scrollWheel 2s ease-in-out infinite; }
+    @keyframes scrollWheel { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(12px);opacity:0} }
+
+    /* ══ IMAGE REVEAL OVERLAY ══ */
+    .img-reveal { position: relative; overflow: hidden; }
+    .img-reveal::after { content: ''; position: absolute; inset: 0; background: var(--green); transform: translateX(-101%); transition: transform 0.6s cubic-bezier(0.77,0,0.18,1); }
+    .img-reveal.reveal-active::after { transform: translateX(101%); }
+
+    /* ══ HOVER CARD SHINE ══ */
+    .service-card .shine {
+      position: absolute; inset: 0; background: linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.04) 50%,transparent 60%);
+      background-size: 200%; background-position: 200%;
+      transition: background-position 0.5s ease;
+      pointer-events: none; border-radius: inherit;
+    }
+    .service-card:hover .shine { background-position: -200%; }
+
+    /* ══ ANIMATED DOTS SECTION DIVIDER ══ */
+    .dot-divider { display: flex; justify-content: center; gap: 8px; padding: 20px 0; }
+    .dot-divider span { width: 6px; height: 6px; border-radius: 50%; background: rgba(76,175,80,0.3); animation: dotWave 1.4s ease-in-out infinite; }
+    .dot-divider span:nth-child(2){animation-delay:0.2s}
+    .dot-divider span:nth-child(3){animation-delay:0.4s}
+    @keyframes dotWave{0%,100%{transform:scaleY(1);background:rgba(76,175,80,0.3)}50%{transform:scaleY(2.5);background:var(--green)}}
+
+    /* ══ FLOATING SHAPES ══ */
+    .float-shape {
+      position: absolute; pointer-events: none; z-index: 0;
+      animation: shapeFloat 8s ease-in-out infinite;
+    }
+    @keyframes shapeFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(10deg)}}
+
+    /* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-image{display:none;}
+  .contact-inner{grid-template-columns:1fr;gap:48px;}
+  .form-row,.review-form-row{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .trust-platforms{display:none;}
+  .trust-divider{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">ShopifySuccessHub</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- CANVAS -->
+<canvas id="canvas-bg"></canvas>
+
+<!-- FLOATING BADGE -->
+<div id="float-badge" onclick="document.getElementById('audit-overlay').style.display='flex'">
+  🎁 <span>Free Audit</span>
+</div>
+
+<!-- TOAST -->
+<div id="toast"><span id="toast-icon">✅</span><span id="toast-msg">Welcome!</span></div>
+
+<!-- ═══ POPUP ═══ -->
+<div id="audit-overlay">
+  <div id="audit-popup">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-badge">🎁 100% Free — No Strings Attached</div>
+    <h2>Claim Your <span>FREE</span><br/>Store Audit</h2>
+    <p>Our Shopify experts will analyse your store, find revenue leaks, and hand you a custom growth roadmap — completely free.</p>
+    <div class="popup-form">
+      <input type="text" id="popup-name" placeholder="Your Full Name"/>
+      <input type="email" id="popup-email" placeholder="Your Email Address"/>
+      <input type="url" id="popup-store" placeholder="Your Shopify Store URL"/>
+      <button class="popup-submit" onclick="claimAudit()">🚀 Claim My Free Audit Now</button>
+    </div>
+    <p class="popup-skip" onclick="closePopup()">No thanks, I'll pass on the free audit</p>
+    <div class="popup-trust">
+      <span style="color:#f4c430;font-size:0.9rem;">★★★★★</span>
+      <span>Trusted by <strong style="color:#fff">20,000+</strong> store owners</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-logo">
+    <img src="62365.png" alt="ShopifySuccessHub" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+    <span class="nav-logo-text" style="display:none">ShopifySuccessHub</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#post-review">Leave Review</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('audit-overlay').style.display='flex'">🎁 Free Audit</button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-blob blob1"></div><div class="hero-blob blob2"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow"><span class="hero-dot"></span> Ecommerce Growth Partner</div>
+      <h1 class="hero-title">
+        <span class="line1">Shopify</span>
+        <span class="line2">Success</span>
+        <span class="line3">Hub</span>
+      </h1>
+      <p class="hero-sub">We build, optimize, and scale Shopify stores that convert. Digital products, fast setup, and proven growth strategies — all under one roof.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">Start Your Store →</a>
+        <a href="#services" class="btn-outline">Our Services</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" data-target="20000" data-suffix="+">20K+</span><span class="stat-label">Happy Clients</span></div>
+        <div class="stat"><span class="stat-num" data-target="98" data-suffix="%">98%</span><span class="stat-label">Satisfaction</span></div>
+        <div class="stat"><span class="stat-num" data-target="3" data-suffix="x">3x</span><span class="stat-label">Revenue Lift</span></div>
+        <div class="stat"><span class="stat-num" data-target="150" data-suffix="+">150+</span><span class="stat-label">Stores Built</span></div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="55848.jpg" alt="Shopify Store Expert" onerror="this.style.display='none'"/>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="dot"></span>Fast Store Setup</span>
+    <span class="marquee-item"><span class="dot"></span>Store Optimization</span>
+    <span class="marquee-item"><span class="dot"></span>Digital Products</span>
+    <span class="marquee-item"><span class="dot"></span>Growth Strategy</span>
+    <span class="marquee-item"><span class="dot"></span>Custom Theme Design</span>
+    <span class="marquee-item"><span class="dot"></span>20,000+ Happy Clients</span>
+    <span class="marquee-item"><span class="dot"></span>Ongoing Support</span>
+    <span class="marquee-item"><span class="dot"></span>Ecommerce Experts</span>
+    <span class="marquee-item"><span class="dot"></span>Fast Store Setup</span>
+    <span class="marquee-item"><span class="dot"></span>Store Optimization</span>
+    <span class="marquee-item"><span class="dot"></span>Digital Products</span>
+    <span class="marquee-item"><span class="dot"></span>Growth Strategy</span>
+    <span class="marquee-item"><span class="dot"></span>Custom Theme Design</span>
+    <span class="marquee-item"><span class="dot"></span>20,000+ Happy Clients</span>
+    <span class="marquee-item"><span class="dot"></span>Ongoing Support</span>
+    <span class="marquee-item"><span class="dot"></span>Ecommerce Experts</span>
+  </div>
+</div>
+
+<!-- TRUST BANNER -->
+<div class="trust-banner">
+  <div class="trust-inner">
+    <div class="trust-count">
+      <div>
+        <div class="trust-num">20,000+</div>
+        <div class="trust-label">Happy Clients Worldwide</div>
+        <div class="trust-stars">★★★★★</div>
+      </div>
+      <div class="trust-divider"></div>
+      <div>
+        <div style="font-size:0.8rem;color:var(--gray);font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.08em;">Rated Excellent On</div>
+        <div class="trust-platforms">
+          <div class="platform-pill"><span class="p-icon">⭐</span><div><div class="p-name">Trustpilot</div><div class="p-score">4.9 / 5</div></div></div>
+          <div class="platform-pill"><span class="p-icon">🛍️</span><div><div class="p-name">Shopify</div><div class="p-score">4.8 / 5</div></div></div>
+          <div class="platform-pill"><span class="p-icon">🌐</span><div><div class="p-name">Google</div><div class="p-score">4.9 / 5</div></div></div>
+        </div>
+      </div>
+    </div>
+    <button class="trust-cta" onclick="document.getElementById('audit-overlay').style.display='flex'">🎁 Claim Free Audit</button>
+  </div>
+</div>
+
+
+<div class="dot-divider"><span></span><span></span><span></span></div>
+<!-- ═══ SERVICES ═══ -->
+<section id="services" style="position:relative;"><div class="section-num">01</div>
+  <div class="section-header centered fade-up">
+    <p class="section-label">What We Do</p>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">Everything you need to launch and grow a winning Shopify store — from day one to scaling beyond 7 figures.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-up"><div class="shine"></div><div class="service-icon">⚡</div><h3>Fast Store Setup</h3><p>Get your Shopify store live in record time. We handle theme selection, configuration, and launch-ready optimization so you can start selling immediately.</p></div>
+    <div class="service-card fade-up"><div class="shine"></div><div class="service-icon">🔥</div><h3>Store Optimization</h3><p>Conversion rate audits, speed optimization, and UX improvements that turn browsers into buyers. We analyze every touchpoint in your funnel.</p></div>
+    <div class="service-card fade-up"><div class="shine"></div><div class="service-icon">💻</div><h3>Digital Products</h3><p>Set up and sell digital downloads, courses, and templates on Shopify. We configure delivery, licensing, and the full digital product experience.</p></div>
+    <div class="service-card fade-up"><div class="shine"></div><div class="service-icon">📈</div><h3>Growth Strategy</h3><p>Data-driven marketing plans, email sequences, and ad strategy to grow your store revenue month over month with measurable ROI.</p></div>
+    <div class="service-card fade-up"><div class="shine"></div><div class="service-icon">🎨</div><h3>Custom Theme Design</h3><p>Bespoke Shopify themes built to reflect your brand. Pixel-perfect, mobile-first, and engineered for maximum performance and conversions.</p></div>
+    <div class="service-card fade-up"><div class="shine"></div><div class="service-icon">🤝</div><h3>Ongoing Support</h3><p>Dedicated account management and technical support. We're your long-term ecommerce partner — always available when you need us.</p></div>
+  </div>
+</section>
+
+
+<div class="dot-divider"><span></span><span></span><span></span></div>
+<!-- ═══ TEAM ═══ -->
+<section id="team" style="position:relative;"><div class="section-num">02</div>
+  <div class="section-header centered fade-up">
+    <p class="section-label">Who We Are</p>
+    <h2 class="section-title">Meet the Team</h2>
+    <p class="section-sub">A passionate squad of Shopify specialists, designers, and growth strategists dedicated entirely to your success.</p>
+  </div>
+  <div class="team-grid">
+
+    <!-- OLUMIDE FIRST -->
+    <div class="team-card ceo-card fade-up">
+      <div class="team-avatar" style="position:relative;">
+        <img src="65164.jpg" alt="Olumide Olatunsesi"/>
+        <div class="team-avatar-overlay"></div>
+        <div class="ceo-badge">👑 CEO & Founder</div>
+      </div>
+      <div class="team-info">
+        <h3>Olumide Olatunsesi</h3>
+        <p class="team-role">CEO & Founder</p>
+        <p class="team-bio">The visionary behind ShopifySuccessHub. Olumide built this company from the ground up to help entrepreneurs worldwide grow profitable Shopify stores.</p>
+        <div class="team-socials">
+          <a href="https://www.instagram.com/olumidetech?igsh=NDd5MndmY2p2N3pq" target="_blank" class="social-btn">📸</a>
+          <a href="https://www.facebook.com/share/1F7dvTdHmP/" target="_blank" class="social-btn">📘</a>
+          <a href="mailto:olumideolatunsesi@gmail.com" class="social-btn">✉️</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-avatar"><img src="99736.jpg" alt="Alex Rivera"/><div class="team-avatar-overlay"></div></div>
+      <div class="team-info">
+        <h3>Alex Rivera</h3><p class="team-role">Lead Strategist</p>
+        <p class="team-bio">8+ years scaling Shopify brands. Alex leads client strategy and crafts every growth roadmap with precision.</p>
+        <div class="team-socials"><a href="#" class="social-btn">in</a><a href="#" class="social-btn">𝕏</a></div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-avatar"><img src="99734.jpg" alt="Jordan Lee"/><div class="team-avatar-overlay"></div></div>
+      <div class="team-info">
+        <h3>Jordan Lee</h3><p class="team-role">Senior Developer</p>
+        <p class="team-bio">Shopify Liquid expert and performance specialist. Builds custom apps and themes that load fast and convert faster.</p>
+        <div class="team-socials"><a href="#" class="social-btn">in</a><a href="#" class="social-btn">🐙</a></div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-avatar"><img src="99730.jpg" alt="Mia Chen"/><div class="team-avatar-overlay"></div></div>
+      <div class="team-info">
+        <h3>Mia Chen</h3><p class="team-role">Head of Design</p>
+        <p class="team-bio">Creative director who turns brand visions into stunning, high-converting Shopify storefronts clients love.</p>
+        <div class="team-socials"><a href="#" class="social-btn">in</a><a href="#" class="social-btn">🎨</a></div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-avatar"><img src="99655.jpg" alt="Sara Kim"/><div class="team-avatar-overlay"></div></div>
+      <div class="team-info">
+        <h3>Sara Kim</h3><p class="team-role">Client Success Manager</p>
+        <p class="team-bio">Your dedicated point of contact. Sara ensures every project runs smoothly and every client gets outstanding results.</p>
+        <div class="team-socials"><a href="#" class="social-btn">in</a><a href="#" class="social-btn">✉️</a></div>
+      </div>
+    </div>
+
+    <div class="team-card fade-up">
+      <div class="team-avatar-emoji">📊</div>
+      <div class="team-info">
+        <h3>Priya Nair</h3><p class="team-role">Growth & Analytics Lead</p>
+        <p class="team-bio">Data-driven marketer running paid ads, email campaigns, and CRO testing to maximize client ROI every month.</p>
+        <div class="team-socials"><a href="#" class="social-btn">in</a><a href="#" class="social-btn">𝕏</a></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<div class="dot-divider"><span></span><span></span><span></span></div>
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials" style="position:relative;"><div class="section-num">03</div>
+  <div class="section-header centered fade-up">
+    <p class="section-label">20,000+ Happy Clients</p>
+    <h2 class="section-title">What Our Clients Say</h2>
+    <p class="section-sub">Real results from real store owners who trusted ShopifySuccessHub to grow their business.</p>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card fade-up">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"</div>
+      <p class="t-text">ShopifySuccessHub completely transformed our store. Within 60 days, our conversion rate doubled and revenue hit a new all-time high. Best investment we've ever made.</p>
+      <div class="t-author"><div class="t-avatar">DM</div><div><p class="t-name">Daniel Morris</p><p class="t-title">CEO, TrendWave Apparel</p></div></div>
+    </div>
+    <div class="testimonial-card fade-up">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"</div>
+      <p class="t-text">The team built our entire digital product store from scratch in under a week. Setup was blazing fast, the design is beautiful, and sales started coming in on day one.</p>
+      <div class="t-author"><div class="t-avatar">AL</div><div><p class="t-name">Aisha Lawson</p><p class="t-title">Founder, Digital Bloom Co.</p></div></div>
+    </div>
+    <div class="testimonial-card fade-up">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-quote">"</div>
+      <p class="t-text">We went from $8k/month to $34k/month in just one quarter. The growth strategy they built was unlike anything I'd seen. Absolutely worth every penny.</p>
+      <div class="t-author"><div class="t-avatar">TG</div><div><p class="t-name">Tom Grant</p><p class="t-title">Owner, Gear & Supply Co.</p></div></div>
+    </div>
+  </div>
+</section>
+
+
+<div class="dot-divider"><span></span><span></span><span></span></div>
+<!-- ═══ POST REVIEW ═══ -->
+<section id="post-review" style="position:relative;"><div class="section-num">04</div>
+  <div class="section-header centered fade-up">
+    <p class="section-label">Share Your Experience</p>
+    <h2 class="section-title">Leave a Review</h2>
+    <p class="section-sub">Worked with us? We'd love to hear from you. Your review helps other store owners make confident decisions.</p>
+  </div>
+  <div class="review-post-inner">
+    <div class="review-form fade-up">
+      <div class="review-form-row">
+        <div class="fg"><label>Your Name</label><input type="text" id="r-name" placeholder="e.g. Sarah Johnson"/></div>
+        <div class="fg"><label>Your Store / Company</label><input type="text" id="r-company" placeholder="e.g. My Shopify Store"/></div>
+      </div>
+      <div class="fg">
+        <label>Your Rating</label>
+        <div class="star-picker" id="star-picker">
+          <button class="star-btn" data-val="1" onclick="setRating(1)">★</button>
+          <button class="star-btn" data-val="2" onclick="setRating(2)">★</button>
+          <button class="star-btn" data-val="3" onclick="setRating(3)">★</button>
+          <button class="star-btn" data-val="4" onclick="setRating(4)">★</button>
+          <button class="star-btn" data-val="5" onclick="setRating(5)">★</button>
+        </div>
+      </div>
+      <div class="fg"><label>Your Review</label><textarea id="r-text" placeholder="Tell us about your experience with ShopifySuccessHub..."></textarea></div>
+      <button class="review-submit" id="review-btn" onclick="submitReview()">✨ Post My Review</button>
+    </div>
+    <div id="user-reviews-list"></div>
+  </div>
+</section>
+
+
+<div class="dot-divider"><span></span><span></span><span></span></div>
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" style="position:relative;"><div class="section-num">05</div>
+  <div class="contact-inner">
+    <div class="slide-left">
+      <p class="section-label">Get In Touch</p>
+      <h2>Ready to Grow<br/>Your Store?</h2>
+      <p>Tell us about your project and one of our Shopify experts will get back to you within 24 hours. Let's build something great together.</p>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-item-text">
+          <span>Gmail</span>
+          <strong><a href="mailto:olumideolatunsesi@gmail.com">olumideolatunsesi@gmail.com</a></strong>
+          <strong><a href="mailto:oolatunsesi@gmail.com" style="color:var(--gray);font-size:0.85rem;">oolatunsesi@gmail.com</a></strong>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📸</div>
+        <div class="contact-item-text">
+          <span>Instagram</span>
+          <strong><a href="https://www.instagram.com/olumidetech?igsh=NDd5MndmY2p2N3pq" target="_blank" style="color:var(--green-light);">@olumidetech</a></strong>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📘</div>
+        <div class="contact-item-text">
+          <span>Facebook</span>
+          <strong><a href="https://www.facebook.com/share/1F7dvTdHmP/" target="_blank" style="color:var(--green-light);">ShopifySuccessHub on Facebook</a></strong>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏱️</div>
+        <div class="contact-item-text"><span>Response Time</span><strong>Within 24 Hours</strong></div>
+      </div>
+      <div class="social-links-row">
+        <a href="https://www.instagram.com/olumidetech?igsh=NDd5MndmY2p2N3pq" target="_blank" class="social-link-btn ig-btn">📸</a>
+        <a href="https://www.facebook.com/share/1F7dvTdHmP/" target="_blank" class="social-link-btn fb-btn">📘</a>
+        <a href="mailto:olumideolatunsesi@gmail.com" class="social-link-btn gm-btn">✉️</a>
+      </div>
+    </div>
+    <div class="slide-right">
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" placeholder="John"/></div>
+          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe"/></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="john@example.com"/></div>
+        <div class="form-group">
+          <label>Service Interested In</label>
+          <select>
+            <option value="">Select a service...</option>
+            <option>Fast Store Setup</option>
+            <option>Store Optimization</option>
+            <option>Digital Products</option>
+            <option>Growth Strategy</option>
+            <option>Custom Theme Design</option>
+            <option>Ongoing Support</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Tell Us About Your Project</label><textarea placeholder="Describe your store, goals, and what you need help with..."></textarea></div>
+        <button class="form-submit" id="contact-submit">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <img src="62365.png" alt="ShopifySuccessHub" style="height:36px;object-fit:contain;" onerror="this.outerHTML='<span style=\'font-family:Bebas Neue,sans-serif;font-size:1.3rem;color:#4caf50\'>ShopifySuccessHub</span>'"/>
+    </div>
+    <p class="footer-copy">© 2026 ShopifySuccessHub. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#team">Team</a>
+      <a href="#testimonials">Reviews</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── LOADER ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+    setTimeout(() => showToast('Welcome to ShopifySuccessHub! 🚀'), 1000);
+  }, 1800);
+});
+
+// ── CUSTOM CURSOR ──
+const cursor = document.createElement('div'); cursor.id = 'cursor';
+const ring = document.createElement('div'); ring.id = 'cursor-ring';
+document.body.appendChild(cursor); document.body.appendChild(ring);
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+function animateRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animateRing); }
+animateRing();
+document.querySelectorAll('a,button,.service-card,.team-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform='translate(-50%,-50%) scale(2.5)'; ring.style.width='60px'; ring.style.height='60px'; ring.style.borderColor='rgba(76,175,80,0.8)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform='translate(-50%,-50%) scale(1)'; ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(76,175,80,0.5)'; });
+});
+
+// ── CANVAS PARTICLES ──
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+class Particle {
+  constructor(){ this.reset(); }
+  reset(){ this.x=Math.random()*W; this.y=H+20; this.r=Math.random()*3+1; this.vx=(Math.random()-0.5)*0.4; this.vy=-(Math.random()*0.6+0.2); this.alpha=Math.random()*0.3+0.05; this.life=0; this.maxLife=Math.random()*400+200; }
+  update(){ this.x+=this.vx; this.y+=this.vy; this.life++; if(this.life>this.maxLife||this.y<-20) this.reset(); }
+  draw(){ ctx.save(); ctx.globalAlpha=this.alpha*(1-this.life/this.maxLife); ctx.fillStyle='#4caf50'; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill(); ctx.restore(); }
+}
+for(let i=0;i<60;i++) particles.push(new Particle());
+function drawLines(){
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){ ctx.save(); ctx.globalAlpha=0.04*(1-dist/120); ctx.strokeStyle='#4caf50'; ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.stroke(); ctx.restore(); }
+    }
+  }
+}
+function animateCanvas(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{p.update();p.draw();}); drawLines(); requestAnimationFrame(animateCanvas); }
+animateCanvas();
+
+// ── PROGRESS BAR ──
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ── POPUP ──
+function closePopup(){ document.getElementById('audit-overlay').style.display='none'; }
+async function claimAudit(){
+  const name=document.getElementById('popup-name').value.trim();
+  const email=document.getElementById('popup-email').value.trim();
+  const store=document.getElementById('popup-store').value.trim();
+  if(!name||!email){alert('Please enter your name and email!');return;}
+  const btn=document.querySelector('.popup-submit');
+  btn.textContent='⏳ Submitting...'; btn.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/f/xnjlleey',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({_subject:'🎁 NEW FREE AUDIT REQUEST — ShopifySuccessHub',name,email,store_url:store||'Not provided',type:'Free Audit Claim'})});
+    if(res.ok){ btn.textContent="✅ Claimed! We'll be in touch within 24 hours."; btn.style.background='#2e7d32'; setTimeout(()=>{closePopup();btn.disabled=false;btn.textContent='🚀 Claim My Free Audit Now';btn.style.background='';},2800); showToast('Audit claimed! We\'ll contact you soon 🎉'); }
+    else throw new Error();
+  }catch(e){btn.textContent='❌ Error. Try again.';btn.disabled=false;setTimeout(()=>{btn.textContent='🚀 Claim My Free Audit Now';},2500);}
+}
+
+// ── COUNTER ANIMATION ──
+let countersRun=false;
+const counterObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting&&!countersRun){
+      countersRun=true;
+      document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
+        const target=+el.dataset.target, suffix=el.dataset.suffix||'';
+        let cur=0; const inc=target/70;
+        const t=setInterval(()=>{ cur+=inc; if(cur>=target){cur=target;clearInterval(t);} el.textContent=(target>=1000?Math.floor(cur).toLocaleString():Math.floor(cur))+suffix; },20);
+      });
+    }
+  });
+},{threshold:0.5});
+document.querySelector('.hero-stats')&&counterObs.observe(document.querySelector('.hero-stats'));
+
+// ── 3D TILT CARDS ──
+document.querySelectorAll('.service-card,.team-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-0.5,y=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform=`perspective(900px) rotateY(${x*12}deg) rotateX(${-y*12}deg) translateY(-8px)`;
+    card.style.setProperty('--mx',(e.clientX-r.left)/r.width*100+'%');
+    card.style.setProperty('--my',(e.clientY-r.top)/r.height*100+'%');
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+});
+
+// ── RIPPLE ──
+document.querySelectorAll('.btn-primary,.btn-outline,.nav-cta,.form-submit,.review-submit,.trust-cta,.popup-submit').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    const rip=document.createElement('span'); rip.className='ripple';
+    const rect=this.getBoundingClientRect(),size=Math.max(rect.width,rect.height);
+    rip.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    this.appendChild(rip); setTimeout(()=>rip.remove(),800);
+  });
+});
+
+// ── TOAST ──
+function showToast(msg,icon='✅'){
+  document.getElementById('toast-icon').textContent=icon;
+  document.getElementById('toast-msg').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+// ── STAR RATING ──
+let selectedRating=0;
+function setRating(val){
+  selectedRating=val;
+  document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('active',+b.dataset.val<=val));
+}
+
+// ── PRELOADED REVIEWS ──
+const preloaded=[
+  {name:'Olivia P.',company:'LuxeBeauty Shop',rating:5,text:'Absolutely incredible team. Our revenue grew 200% in 3 months after the store redesign!',date:'March 2026'},
+  {name:'Ryan M.',company:'TechGadgets Store',rating:5,text:'Fast, professional, and results-driven. The free audit alone gave us $50k in actionable insights.',date:'February 2026'},
+  {name:'Chloe W.',company:'Bloom Botanicals',rating:5,text:'I launched my first digital product store with their help and made my first sales the same week. 10/10!',date:'January 2026'},
+];
+let allReviews=[...preloaded];
+function renderReviews(){
+  const c=document.getElementById('user-reviews-list'); c.innerHTML='';
+  allReviews.forEach(r=>{
+    const stars='★'.repeat(r.rating)+'☆'.repeat(5-r.rating);
+    const d=document.createElement('div'); d.className='user-review-card';
+    d.innerHTML=`<div class="ur-header"><div><div class="ur-name">${r.name}</div><div class="ur-company">${r.company}</div></div><div class="ur-stars">${stars}</div></div><div class="ur-text">"${r.text}"</div><div class="ur-date">${r.date}</div>`;
+    c.appendChild(d);
+  });
+}
+renderReviews();
+
+async function submitReview(){
+  const name=document.getElementById('r-name').value.trim();
+  const company=document.getElementById('r-company').value.trim();
+  const text=document.getElementById('r-text').value.trim();
+  if(!name||!text||selectedRating===0){alert('Please fill in your name, select a rating, and write your review!');return;}
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const now=new Date();
+  allReviews=[{name,company:company||'Verified Client',rating:selectedRating,text,date:`${months[now.getMonth()]} ${now.getFullYear()}`},...allReviews];
+  renderReviews();
+  document.getElementById('r-name').value=''; document.getElementById('r-company').value=''; document.getElementById('r-text').value=''; setRating(0);
+  const btn=document.getElementById('review-btn'); btn.textContent='✅ Review Posted — Thank You!'; btn.style.background='#2e7d32';
+  setTimeout(()=>{btn.textContent='✨ Post My Review';btn.style.background='';},3500);
+  document.getElementById('user-reviews-list').scrollIntoView({behavior:'smooth'});
+  showToast('Your review was posted! Thank you 🌟','⭐');
+  fetch('https://formspree.io/f/xnjlleey',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({_subject:'⭐ NEW REVIEW — ShopifySuccessHub',reviewer_name:name,company:company||'Verified Client',rating:selectedRating+' stars',review:text,type:'Customer Review'})});
+}
+
+// ── CONTACT FORM ──
+document.getElementById('contact-submit').addEventListener('click',async function(){
+  const inputs=document.querySelectorAll('#contact input,#contact select,#contact textarea');
+  const fname=inputs[0]?.value||'',lname=inputs[1]?.value||'',cemail=inputs[2]?.value||'',service=inputs[3]?.value||'',msg=inputs[4]?.value||'';
+  if(!cemail||!msg){alert('Please enter your email and message!');return;}
+  this.textContent='⏳ Sending...'; this.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/f/xnjlleey',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({_subject:'📩 New Contact Message — ShopifySuccessHub',name:fname+' '+lname,email:cemail,service_interested:service||'Not specified',message:msg,type:'Contact Form'})});
+    if(res.ok){ this.textContent='✅ Message Sent!'; this.style.background='#2e7d32'; inputs.forEach(i=>i.value=''); showToast('Message sent! We\'ll reply within 24h 📩','📩'); setTimeout(()=>{this.textContent='Send Message →';this.style.background='';this.disabled=false;},3500); }
+    else throw new Error();
+  }catch(e){this.textContent='❌ Failed. Try again.';this.disabled=false;setTimeout(()=>{this.textContent='Send Message →';},2500);}
+});
+
+// ── SCROLL ANIMATIONS ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*90); });
+},{threshold:0.08});
+document.querySelectorAll('.fade-up,.slide-left,.slide-right').forEach(el=>obs.observe(el));
+
+
+  // ══ SPLIT TEXT — hero title chars ══
+  document.querySelectorAll('.line1,.line2,.line3').forEach((line, li) => {
+    const text = line.textContent;
+    line.textContent = '';
+    [...text].forEach((char, i) => {
+      const s = document.createElement('span');
+      s.className = 'split-char';
+      s.textContent = char === ' ' ? '\u00A0' : char;
+      s.style.animationDelay = (li * 0.3 + i * 0.04) + 's';
+      line.appendChild(s);
+    });
+  });
+
+  // ══ TYPEWRITER for hero sub ══
+  const heroSub = document.querySelector('.hero-sub');
+  if (heroSub) {
+    const fullText = heroSub.textContent.trim();
+    heroSub.textContent = '';
+    heroSub.classList.add('typewriter');
+    let idx = 0;
+    setTimeout(() => {
+      const tw = setInterval(() => {
+        heroSub.textContent += fullText[idx++];
+        if (idx >= fullText.length) {
+          clearInterval(tw);
+          heroSub.classList.remove('typewriter');
+        }
+      }, 18);
+    }, 1200);
+  }
+
+  // ══ MAGNETIC BUTTONS ══
+  document.querySelectorAll('.btn-primary,.nav-cta,.trust-cta,.popup-submit,.review-submit,.form-submit').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width/2) * 0.25;
+      const y = (e.clientY - r.top - r.height/2) * 0.25;
+      btn.style.transform = `translate(${x}px,${y}px) scale(1.04)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+
+  // ══ IMAGE REVEAL ══
+  const imgObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('reveal-active');
+        imgObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.hero-image').forEach(el => {
+    el.classList.add('img-reveal');
+    imgObs.observe(el);
+  });
+
+  // ══ PARALLAX on hero image ══
+  window.addEventListener('scroll', () => {
+    const img = document.querySelector('.hero-image img');
+    if (img) img.style.transform = `translateY(${window.scrollY * 0.08}px)`;
+  });
+
+  // ══ STAGGER children in grids ══
+  document.querySelectorAll('.services-grid,.team-grid,.testimonials-grid').forEach(grid => {
+    [...grid.children].forEach((child, i) => {
+      child.classList.add('stagger-child');
+      child.style.transitionDelay = (i * 0.1) + 's';
+    });
+  });
+  const staggerObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.stagger-child').forEach(c => c.classList.add('visible'));
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.services-grid,.team-grid,.testimonials-grid').forEach(g => staggerObs.observe(g));
+
+  // ══ ACTIVE NAV LINK on scroll ══
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--green-light)' : '';
+    });
+  });
+
+  // ══ GLITCH on CEO badge ══
+  const ceoBadge = document.querySelector('.ceo-badge');
+  if (ceoBadge) {
+    setInterval(() => {
+      ceoBadge.style.textShadow = `${Math.random()*4-2}px 0 #f00, ${Math.random()*-4+2}px 0 #0ff`;
+      setTimeout(() => ceoBadge.style.textShadow = '', 80);
+    }, 3000);
+  }
+
+  // ══ SCROLL-TRIGGERED NUMBER GLOW ══
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const numObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          el.style.animation = 'none';
+          el.style.textShadow = '0 0 40px rgba(76,175,80,0.9)';
+          setTimeout(() => el.style.textShadow = '0 0 20px rgba(76,175,80,0.4)', 800);
+        }
+      });
+    }, { threshold: 0.5 });
+    numObs.observe(el);
+  });
+
+  // ══ SECTION ENTRANCE — large number fade ══
+  document.querySelectorAll('.section-num').forEach(el => {
+    const secObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          el.style.transition = 'opacity 1s ease, transform 1s ease';
+          el.style.opacity = '1';
+          el.style.transform = 'translateX(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(60px)';
+    secObs.observe(el);
+  });
+
+  // ══ MOUSE TRAIL ══
+  const trail = [];
+  for (let i = 0; i < 8; i++) {
+    const dot = document.createElement('div');
+    dot.style.cssText = `position:fixed;width:${8-i}px;height:${8-i}px;border-radius:50%;background:rgba(76,175,80,${0.4-i*0.04});pointer-events:none;z-index:99997;transform:translate(-50%,-50%);transition:left ${0.05+i*0.04}s,top ${0.05+i*0.04}s;`;
+    document.body.appendChild(dot);
+    trail.push(dot);
+  }
+  document.addEventListener('mousemove', e => {
+    trail.forEach(dot => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
+  });
+
+  // ══ PLATFORM PILL hover glow ══
+  document.querySelectorAll('.platform-pill').forEach(pill => {
+    pill.addEventListener('mouseenter', () => pill.style.boxShadow = '0 0 20px rgba(76,175,80,0.2)');
+    pill.addEventListener('mouseleave', () => pill.style.boxShadow = '');
+  });
+
+  // ══ TEAM CARD — reveal role on hover ══
+  document.querySelectorAll('.team-card').forEach(card => {
+    const role = card.querySelector('.team-role');
+    if (role) {
+      role.style.transition = 'color 0.3s, letter-spacing 0.3s';
+      card.addEventListener('mouseenter', () => { role.style.color = '#fff'; role.style.letterSpacing = '0.15em'; });
+      card.addEventListener('mouseleave', () => { role.style.color = ''; role.style.letterSpacing = ''; });
+    }
+  });
+
+  // ══ FLOATING SHAPES in sections ══
+  ['#services','#team','#testimonials'].forEach((sel, i) => {
+    const sec = document.querySelector(sel);
+    if (!sec) return;
+    const shape = document.createElement('div');
+    shape.className = 'float-shape';
+    shape.style.cssText = `width:120px;height:120px;border:1px solid rgba(76,175,80,0.08);border-radius:${i%2===0?'50%':'20px'};top:${20+i*20}%;${i%2===0?'left':'right'}:3%;animation-delay:${i}s;`;
+    sec.appendChild(shape);
+  });
+
+  // ── SERVICE CARD MOUSE GLOW ──
+document.querySelectorAll('.service-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',(e.clientX-r.left)/r.width*100+'%');
+    card.style.setProperty('--my',(e.clientY-r.top)/r.height*100+'%');
+  });
+});
+</script>
+</body>
+</html>

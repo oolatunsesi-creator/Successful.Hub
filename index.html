@@ -278,6 +278,7 @@ footer{background:#070a10;border-top:1px solid var(--border);padding:56px 5% 36p
       to   { opacity:1; transform: translateY(0) rotate(0deg); }
     }
 
+
     /* ══ MORPHING HERO BG BLOB ══ */
     .hero-blob {
       position: absolute; z-index: 0; pointer-events: none;
@@ -411,150 +412,6 @@ footer{background:#070a10;border-top:1px solid var(--border);padding:56px 5% 36p
     @keyframes shapeFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(10deg)}}
 
     
-    /* ══ SCROLL CHARACTER ANIMATION ══ */
-    #scroll-scene {
-      position: relative;
-      height: 500vh; /* tall scroll space */
-      z-index: 2;
-    }
-    #scroll-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* CHARACTER wrapper */
-    #char-wrap {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 340px;
-      height: 500px;
-      z-index: 3;
-      transform-origin: bottom center;
-    }
-    #char-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      border-radius: 20px 20px 0 0;
-      filter: drop-shadow(0 0 40px rgba(76,175,80,0.3));
-      transform-origin: bottom center;
-      transition: filter 0.3s;
-    }
-
-    /* SCROLL TEXT PANELS */
-    .scroll-panel {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      padding: 0 8%;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-      pointer-events: none;
-    }
-    .scroll-panel.active { opacity: 1; pointer-events: auto; }
-    .scroll-panel-text { max-width: 400px; }
-    .scroll-panel-text .sp-label {
-      font-size: 0.72rem; font-weight: 900; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--green); margin-bottom: 12px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .scroll-panel-text .sp-label::before { content:''; width:24px; height:2px; background:var(--green); border-radius:2px; }
-    .scroll-panel-text h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 5vw, 5rem);
-      line-height: 0.95; margin-bottom: 20px;
-      transform: translateY(40px); transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.1s;
-    }
-    .scroll-panel.active .scroll-panel-text h2 { transform: translateY(0); }
-    .scroll-panel-text p {
-      font-size: 0.98rem; color: var(--gray); line-height: 1.75; max-width: 380px;
-      transform: translateY(30px); transition: transform 0.6s ease 0.25s;
-    }
-    .scroll-panel.active .scroll-panel-text p { transform: translateY(0); }
-    .scroll-panel-text .sp-stat {
-      margin-top: 28px; display: flex; gap: 28px;
-      transform: translateY(20px); transition: transform 0.6s ease 0.35s;
-    }
-    .scroll-panel.active .scroll-panel-text .sp-stat { transform: translateY(0); }
-    .sp-stat-item { display: flex; flex-direction: column; gap: 4px; }
-    .sp-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--green); line-height: 1; text-shadow: 0 0 20px rgba(76,175,80,0.4); }
-    .sp-stat-label { font-size: 0.72rem; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-
-    /* LEFT/RIGHT panel positions */
-    .panel-left .scroll-panel-text { margin-right: auto; }
-    .panel-right { justify-content: flex-end; }
-    .panel-right .scroll-panel-text { margin-left: auto; text-align: right; }
-    .panel-right .scroll-panel-text .sp-label { flex-direction: row-reverse; }
-    .panel-right .scroll-panel-text .sp-label::before { display: none; }
-    .panel-right .scroll-panel-text .sp-label::after { content:''; width:24px; height:2px; background:var(--green); border-radius:2px; }
-    .panel-right .scroll-panel-text .sp-stat { justify-content: flex-end; }
-
-    /* CHARACTER GLOW RING */
-    #char-ring {
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(76,175,80,0.12) 0%, transparent 70%);
-      animation: ringBreath 3s ease-in-out infinite;
-      z-index: 2;
-    }
-    @keyframes ringBreath { 0%,100%{transform:translateX(-50%) scale(1);opacity:0.6} 50%{transform:translateX(-50%) scale(1.3);opacity:1} }
-
-    /* SCROLL PROGRESS DOTS */
-    #scene-dots {
-      position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
-      display: flex; flex-direction: column; gap: 12px; z-index: 10;
-    }
-    .scene-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(76,175,80,0.2); border: 1px solid rgba(76,175,80,0.3);
-      transition: background 0.3s, transform 0.3s;
-      cursor: pointer;
-    }
-    .scene-dot.active { background: var(--green); transform: scale(1.5); box-shadow: 0 0 10px var(--green); }
-
-    /* PARTICLE BURST on char */
-    .burst-particle {
-      position: absolute;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      pointer-events: none;
-      animation: burst 0.8s ease-out forwards;
-    }
-    @keyframes burst { 0%{transform:translate(0,0) scale(1);opacity:1} 100%{transform:translate(var(--bx),var(--by)) scale(0);opacity:0} }
-
-    /* GROUND LINE */
-    #char-ground {
-      position: absolute;
-      bottom: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(76,175,80,0.4), var(--green), rgba(76,175,80,0.4), transparent);
-      box-shadow: 0 0 20px rgba(76,175,80,0.4);
-      z-index: 2;
-    }
-
-    /* CINEMATIC BARS */
-    .cinema-bar {
-      position: absolute;
-      left: 0; right: 0; height: 80px;
-      background: var(--darker);
-      z-index: 4;
-      transition: height 0.5s ease;
-    }
-    .cinema-bar.top { top: 0; }
-    .cinema-bar.bottom { bottom: 0; }
 
     /* ── RESPONSIVE ── */
 @media(max-width:960px){
@@ -661,92 +518,7 @@ footer{background:#070a10;border-top:1px solid var(--border);padding:56px 5% 36p
 </section>
 
 
-<!-- ═══ SCROLL CHARACTER SCENE ═══ -->
-<div id="scroll-scene">
-  <div id="scroll-sticky">
 
-    <!-- Cinema bars -->
-    <div class="cinema-bar top" id="bar-top"></div>
-    <div class="cinema-bar bottom" id="bar-bottom"></div>
-
-    <!-- BG glow -->
-    <div id="char-ring"></div>
-    <div id="char-ground"></div>
-
-    <!-- PANEL 1: Sitting — Intro -->
-    <div class="scroll-panel panel-left active" id="panel-0">
-      <div class="scroll-panel-text">
-        <div class="sp-label">Welcome</div>
-        <h2>We Build<br/><span style="color:var(--green)">Shopify</span><br/>Empires</h2>
-        <p>Scroll down to discover how ShopifySuccessHub transforms ordinary stores into extraordinary revenue machines.</p>
-        <div class="sp-stat">
-          <div class="sp-stat-item"><span class="sp-stat-num">20K+</span><span class="sp-stat-label">Happy Clients</span></div>
-          <div class="sp-stat-item"><span class="sp-stat-num">98%</span><span class="sp-stat-label">Satisfaction</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PANEL 2: Rising up -->
-    <div class="scroll-panel panel-right" id="panel-1">
-      <div class="scroll-panel-text">
-        <div class="sp-label">Our Mission</div>
-        <h2>We Don't<br/>Just Build<br/><span style="color:var(--green)">Stores</span></h2>
-        <p>We engineer conversion machines. Every pixel, every flow, every strategy is built to turn visitors into loyal buyers.</p>
-        <div class="sp-stat">
-          <div class="sp-stat-item"><span class="sp-stat-num">150+</span><span class="sp-stat-label">Stores Built</span></div>
-          <div class="sp-stat-item"><span class="sp-stat-num">3x</span><span class="sp-stat-label">Revenue Lift</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PANEL 3: Standing tall -->
-    <div class="scroll-panel panel-left" id="panel-2">
-      <div class="scroll-panel-text">
-        <div class="sp-label">The Founder</div>
-        <h2><span style="color:var(--green)">Olumide</span><br/>Olatunsesi</h2>
-        <p>CEO & Founder of ShopifySuccessHub. Built from vision, passion, and an obsession with helping entrepreneurs win online.</p>
-        <div class="sp-stat">
-          <div class="sp-stat-item"><span class="sp-stat-num">5+</span><span class="sp-stat-label">Years Expert</span></div>
-          <div class="sp-stat-item"><span class="sp-stat-num">24h</span><span class="sp-stat-label">Response Time</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PANEL 4: Action pose -->
-    <div class="scroll-panel panel-right" id="panel-3">
-      <div class="scroll-panel-text">
-        <div class="sp-label">Ready?</div>
-        <h2>Start Your<br/><span style="color:var(--green)">Growth</span><br/>Journey</h2>
-        <p>Join 20,000+ store owners who trusted ShopifySuccessHub to take their ecommerce to the next level.</p>
-        <div class="sp-stat">
-          <div class="sp-stat-item"><span class="sp-stat-num">FREE</span><span class="sp-stat-label">Store Audit</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CHARACTER IMAGE -->
-    <div id="char-wrap">
-      <img id="char-img" src="65164.jpg" alt="Olumide Olatunsesi"/>
-    </div>
-
-    <!-- Scene dots nav -->
-    <div id="scene-dots">
-      <div class="scene-dot active" onclick="goToPanel(0)"></div>
-      <div class="scene-dot" onclick="goToPanel(1)"></div>
-      <div class="scene-dot" onclick="goToPanel(2)"></div>
-      <div class="scene-dot" onclick="goToPanel(3)"></div>
-    </div>
-
-    <!-- Scroll hint -->
-    <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);text-align:center;z-index:10;">
-      <div style="font-size:0.68rem;font-weight:800;color:var(--gray);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;">Scroll to explore</div>
-      <div style="width:24px;height:38px;border:2px solid rgba(76,175,80,0.3);border-radius:12px;margin:0 auto;display:flex;justify-content:center;padding-top:6px;">
-        <div style="width:4px;height:8px;background:var(--green);border-radius:2px;animation:scrollWheel 2s ease-in-out infinite;"></div>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <!-- MARQUEE -->
 <div class="marquee-wrap">
@@ -1058,30 +830,182 @@ document.querySelectorAll('a,button,.service-card,.team-card').forEach(el => {
   el.addEventListener('mouseleave', () => { cursor.style.transform='translate(-50%,-50%) scale(1)'; ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(76,175,80,0.5)'; });
 });
 
-// ── CANVAS PARTICLES ──
+// ── GREEN WAVE + STAR CANVAS ──
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
-let W, H, particles = [];
+let W, H;
 function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
-resize(); window.addEventListener('resize', resize);
-class Particle {
-  constructor(){ this.reset(); }
-  reset(){ this.x=Math.random()*W; this.y=H+20; this.r=Math.random()*3+1; this.vx=(Math.random()-0.5)*0.4; this.vy=-(Math.random()*0.6+0.2); this.alpha=Math.random()*0.3+0.05; this.life=0; this.maxLife=Math.random()*400+200; }
-  update(){ this.x+=this.vx; this.y+=this.vy; this.life++; if(this.life>this.maxLife||this.y<-20) this.reset(); }
-  draw(){ ctx.save(); ctx.globalAlpha=this.alpha*(1-this.life/this.maxLife); ctx.fillStyle='#4caf50'; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill(); ctx.restore(); }
+resize();
+window.addEventListener('resize', resize);
+
+// ── STARS ──
+const stars = Array.from({length:200}, () => ({
+  x: Math.random(),
+  y: Math.random(),
+  r: Math.random()*1.8+0.2,
+  alpha: Math.random()*0.8+0.2,
+  twinkleSpeed: Math.random()*0.03+0.005,
+  twinkleOffset: Math.random()*Math.PI*2,
+  vx: (Math.random()-0.5)*0.00008,
+  vy: (Math.random()-0.5)*0.00008,
+}));
+
+// ── WAVES ──
+const waves = [
+  { amp:80,  freq:0.008, speed:0.012, y:0.55, color:'rgba(76,175,80,0.18)',  width:4 },
+  { amp:60,  freq:0.012, speed:0.018, y:0.60, color:'rgba(76,175,80,0.12)',  width:3 },
+  { amp:100, freq:0.006, speed:0.008, y:0.65, color:'rgba(46,125,50,0.22)',  width:5 },
+  { amp:50,  freq:0.016, speed:0.025, y:0.50, color:'rgba(111,207,115,0.10)',width:2 },
+  { amp:120, freq:0.005, speed:0.006, y:0.72, color:'rgba(76,175,80,0.08)',  width:6 },
+  { amp:40,  freq:0.022, speed:0.032, y:0.45, color:'rgba(0,230,118,0.07)',  width:2 },
+];
+
+// ── FLOATING PARTICLES ──
+const particles = Array.from({length:90}, () => ({
+  x: Math.random()*2-0.5,
+  y: Math.random(),
+  r: Math.random()*2.5+0.5,
+  speed: Math.random()*0.0004+0.0001,
+  drift: (Math.random()-0.5)*0.0002,
+  alpha: Math.random()*0.7+0.1,
+  color: Math.random()>0.5 ? '#4caf50' : (Math.random()>0.5 ? '#00e676' : '#69f0ae'),
+  twinkle: Math.random()*Math.PI*2,
+  tSpeed: Math.random()*0.04+0.01,
+}));
+
+// ── GLOW ORBS ──
+const orbs = Array.from({length:5}, () => ({
+  x: Math.random(),
+  y: Math.random(),
+  r: Math.random()*200+100,
+  tx: Math.random(),
+  ty: Math.random(),
+  speed: Math.random()*0.001+0.0003,
+  alpha: Math.random()*0.08+0.03,
+}));
+
+let t = 0;
+
+function drawStars() {
+  stars.forEach(s => {
+    s.x += s.vx; s.y += s.vy;
+    if(s.x<0) s.x=1; if(s.x>1) s.x=0;
+    if(s.y<0) s.y=1; if(s.y>1) s.y=0;
+    s.twinkleOffset += s.twinkleSpeed;
+    const a = s.alpha * (0.4 + 0.6*Math.abs(Math.sin(s.twinkleOffset)));
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowBlur = 4;
+    ctx.shadowColor = 'rgba(76,175,80,0.6)';
+    ctx.beginPath();
+    ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
 }
-for(let i=0;i<60;i++) particles.push(new Particle());
-function drawLines(){
-  for(let i=0;i<particles.length;i++){
-    for(let j=i+1;j<particles.length;j++){
-      const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
-      const dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<120){ ctx.save(); ctx.globalAlpha=0.04*(1-dist/120); ctx.strokeStyle='#4caf50'; ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.stroke(); ctx.restore(); }
+
+function drawOrbs() {
+  orbs.forEach(o => {
+    o.x += (o.tx-o.x)*o.speed;
+    o.y += (o.ty-o.y)*o.speed;
+    if(Math.abs(o.tx-o.x)<0.005 && Math.abs(o.ty-o.y)<0.005){
+      o.tx=Math.random(); o.ty=Math.random();
     }
-  }
+    const gx=o.x*W, gy=o.y*H;
+    const g = ctx.createRadialGradient(gx,gy,0,gx,gy,o.r);
+    g.addColorStop(0,  `rgba(76,175,80,${o.alpha})`);
+    g.addColorStop(0.5,`rgba(46,125,50,${o.alpha*0.4})`);
+    g.addColorStop(1,  'rgba(0,0,0,0)');
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(gx, gy, o.r, 0, Math.PI*2);
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.restore();
+  });
 }
-function animateCanvas(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{p.update();p.draw();}); drawLines(); requestAnimationFrame(animateCanvas); }
+
+function drawWaves() {
+  waves.forEach((w, wi) => {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(0, H);
+    for(let x=0; x<=W; x+=3) {
+      const phase = t * w.speed + wi * 0.8;
+      const y = w.y*H
+              + Math.sin(x*w.freq + phase) * w.amp
+              + Math.sin(x*w.freq*1.7 + phase*1.3) * w.amp*0.4
+              + Math.cos(x*w.freq*0.5 + phase*0.7) * w.amp*0.3;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, w.y*H - w.amp, 0, H);
+    grad.addColorStop(0, w.color);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Glowing wave line on top
+    ctx.beginPath();
+    for(let x=0; x<=W; x+=3) {
+      const phase = t * w.speed + wi * 0.8;
+      const y = w.y*H
+              + Math.sin(x*w.freq + phase) * w.amp
+              + Math.sin(x*w.freq*1.7 + phase*1.3) * w.amp*0.4
+              + Math.cos(x*w.freq*0.5 + phase*0.7) * w.amp*0.3;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = w.color.replace(/[\d.]+\)$/, '0.9)');
+    ctx.lineWidth = w.width;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = '#4caf50';
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    p.y -= p.speed;
+    p.x += p.drift;
+    p.twinkle += p.tSpeed;
+    if(p.y < -0.05) { p.y=1.05; p.x=Math.random()*1.2-0.1; }
+    const a = p.alpha * (0.3 + 0.7*Math.abs(Math.sin(p.twinkle)));
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.fillStyle = p.color;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x*W, p.y*H, p.r, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function animateCanvas() {
+  t++;
+  // Dark background with slight trail
+  ctx.fillStyle = 'rgba(7,10,16,0.25)';
+  ctx.fillRect(0, 0, W, H);
+
+  drawOrbs();
+  drawStars();
+  drawWaves();
+  drawParticles();
+
+  requestAnimationFrame(animateCanvas);
+}
+
+// First frame — solid bg
+ctx.fillStyle = '#070a10';
+ctx.fillRect(0, 0, W, H);
 animateCanvas();
+
+
 
 // ── PROGRESS BAR ──
 window.addEventListener('scroll', () => {
@@ -1214,122 +1138,8 @@ document.querySelectorAll('.fade-up,.slide-left,.slide-right').forEach(el=>obs.o
 
 
 
-  // ══ SCROLL CHARACTER SCENE ══
-  const scene = document.getElementById('scroll-scene');
-  const charImg = document.getElementById('char-img');
-  const charWrap = document.getElementById('char-wrap');
-  const panels = document.querySelectorAll('.scroll-panel');
-  const dots = document.querySelectorAll('.scene-dot');
-  const barTop = document.getElementById('bar-top');
-  const barBottom = document.getElementById('bar-bottom');
-  const charRing = document.getElementById('char-ring');
-  let currentPanel = 0;
-  let lastPanel = -1;
 
-  // Character states per panel
-  const charStates = [
-    // Panel 0 — sitting/crouching
-    { scaleY: 0.55, scaleX: 1.1, translateY: 120, rotate: 0,
-      filter: 'drop-shadow(0 0 30px rgba(76,175,80,0.2)) brightness(0.85)',
-      imgPos: 'center bottom' },
-    // Panel 1 — rising
-    { scaleY: 0.78, scaleX: 1.04, translateY: 60, rotate: -2,
-      filter: 'drop-shadow(0 0 40px rgba(76,175,80,0.3)) brightness(0.92)',
-      imgPos: 'top center' },
-    // Panel 2 — standing tall
-    { scaleY: 1, scaleX: 1, translateY: 0, rotate: 0,
-      filter: 'drop-shadow(0 0 60px rgba(76,175,80,0.5)) brightness(1.05)',
-      imgPos: 'top center' },
-    // Panel 3 — leaning forward action
-    { scaleY: 1.03, scaleX: 0.97, translateY: -10, rotate: 3,
-      filter: 'drop-shadow(0 0 80px rgba(76,175,80,0.7)) brightness(1.1)',
-      imgPos: 'top center' },
-  ];
 
-  function applyCharState(state, progress=1) {
-    const s = charStates[state];
-    charWrap.style.transform = `translateX(-50%) scaleY(${s.scaleY}) scaleX(${s.scaleX}) translateY(${s.translateY}px) rotate(${s.rotate}deg)`;
-    charImg.style.filter = s.filter;
-    charImg.style.objectPosition = s.imgPos;
-  }
-
-  function setPanel(idx) {
-    panels.forEach((p, i) => p.classList.toggle('active', i === idx));
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    applyCharState(idx);
-
-    // Burst particles on char when panel changes
-    if (idx !== lastPanel && idx > 0) {
-      for (let i = 0; i < 12; i++) {
-        const p = document.createElement('div');
-        p.className = 'burst-particle';
-        const angle = (i / 12) * Math.PI * 2;
-        const dist = 80 + Math.random() * 60;
-        p.style.setProperty('--bx', Math.cos(angle)*dist + 'px');
-        p.style.setProperty('--by', Math.sin(angle)*dist + 'px');
-        p.style.left = '50%'; p.style.top = '40%';
-        p.style.marginLeft = '-3px'; p.style.animationDelay = (i*0.04)+'s';
-        document.getElementById('scroll-sticky').appendChild(p);
-        setTimeout(() => p.remove(), 1000);
-      }
-    }
-
-    // Glow ring intensity
-    charRing.style.opacity = 0.4 + idx * 0.2;
-    charRing.style.transform = `translateX(-50%) scale(${1 + idx * 0.15})`;
-
-    lastPanel = idx;
-  }
-
-  function goToPanel(idx) {
-    const sceneTop = scene.offsetTop;
-    const panelHeight = scene.offsetHeight / panels.length;
-    window.scrollTo({ top: sceneTop + panelHeight * idx + 10, behavior: 'smooth' });
-  }
-
-  // Listen to scroll inside scene
-  function onScroll() {
-    const sceneTop = scene.offsetTop;
-    const sceneHeight = scene.offsetHeight;
-    const scrolled = window.scrollY - sceneTop;
-    const progress = Math.max(0, Math.min(1, scrolled / sceneHeight));
-    const panelCount = panels.length;
-    const panelIdx = Math.min(panelCount - 1, Math.floor(progress * panelCount));
-
-    // Cinematic bars — close on entry, open on exit
-    if (progress > 0 && progress < 0.98) {
-      barTop.style.height = '0px';
-      barBottom.style.height = '0px';
-    } else {
-      barTop.style.height = '80px';
-      barBottom.style.height = '80px';
-    }
-
-    // Smooth char morph between states
-    const localProgress = (progress * panelCount) - panelIdx;
-    if (panelIdx < panelCount - 1) {
-      const curr = charStates[panelIdx];
-      const next = charStates[panelIdx + 1];
-      const lerp = (a, b, t) => a + (b - a) * t;
-      const ease = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-      const t = ease(localProgress);
-      charWrap.style.transform = `translateX(-50%) scaleY(${lerp(curr.scaleY, next.scaleY, t)}) scaleX(${lerp(curr.scaleX, next.scaleX, t)}) translateY(${lerp(curr.translateY, next.translateY, t)}px) rotate(${lerp(curr.rotate, next.rotate, t)}deg)`;
-    }
-
-    if (panelIdx !== currentPanel) {
-      currentPanel = panelIdx;
-      setPanel(panelIdx);
-    }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-  // Init
-  setPanel(0);
-  barTop.style.transition = 'height 0.5s ease';
-  barBottom.style.transition = 'height 0.5s ease';
-  charWrap.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), filter 0.4s ease';
-  charImg.style.transition = 'filter 0.4s ease, object-position 0.4s ease';
 
   // ══ SPLIT TEXT — hero title chars ══
   document.querySelectorAll('.line1,.line2,.line3').forEach((line, li) => {

@@ -323,6 +323,7 @@ footer{background:#020408;border-top:1px solid var(--border);padding:60px 5% 40p
 @keyframes dw{0%,100%{transform:scaleY(1);background:rgba(76,175,80,.25)}50%{transform:scaleY(2.5);background:var(--green)}}
 
 @media(max-width:960px){
+  /* LAYOUT */
   .hero-inner{grid-template-columns:1fr;}
   .hero-img-wrap{display:none;}
   .con-inner{grid-template-columns:1fr;gap:48px;}
@@ -332,8 +333,212 @@ footer{background:#020408;border-top:1px solid var(--border);padding:60px 5% 40p
   .trust-div{display:none;}
   #cur,#cur-ring{display:none;}
   body{cursor:auto;}
-  .nav-btn,.pop-btn,.btn-pri,.btn-sec,.btn-sec,.trust-cta,.rev-btn,.form-btn,.pop-skip,.soc-btn,.soc-link,.gnd,.s-btn,.srv-card,.team-card,.test-card{cursor:pointer;}
+
+  /* CURSOR RESET */
+  .nav-btn,.pop-btn,.btn-pri,.btn-sec,.trust-cta,.rev-btn,.form-btn,.pop-skip,
+  .soc-btn,.soc-link,.gnd,.s-btn,.srv-card,.team-card,.test-card,button,a{cursor:pointer;}
+
+  /* HERO */
+  #hero{padding:100px 5% 60px;}
+  .hero-h1{font-size:clamp(3.2rem,14vw,5rem);}
+  .hero-tag{font-size:.65rem;padding:6px 14px;}
+  .hero-sub{font-size:.92rem;}
+  .hero-btns{flex-direction:column;gap:12px;}
+  .btn-pri,.btn-sec{text-align:center;width:100%;padding:15px 24px;}
+  .hero-stats{gap:20px;margin-top:40px;}
+  .h-stat-n{font-size:2rem;}
+  .h-stat-l{font-size:.62rem;}
+
+  /* NAV */
+  nav{padding:0 4%;}
+  .nav-logo img{height:34px;}
+  .nav-btn{padding:8px 16px;font-size:.78rem;}
+
+  /* GROWTH SCENE */
+  #growth-scene{height:500vh;}
+  #plant-wrap{transform:translateX(-50%) scale(0.85);}
+  .g-panel{padding:0 5%;}
+  .g-txt{max-width:100%;}
+  .g-h{font-size:clamp(2.2rem,9vw,3.5rem);}
+  .g-p{font-size:.86rem;}
+  .g-panel.right{justify-content:flex-start;}
+  .g-panel.right .g-txt{text-align:left;}
+  .g-panel.right .g-lbl{flex-direction:row;justify-content:flex-start;}
+  .g-panel.center{padding-top:5%;align-items:flex-start;}
+  #g-nav{right:12px;}
+  #g-num{font-size:4rem;top:16px;left:16px;}
+
+  /* FRUITS */
+  #fruit-scene{height:400vh;}
+  .fruit-el{font-size:clamp(1.8rem,6vw,2.8rem);}
+  .fruit-panel .g-h{font-size:clamp(2rem,8vw,3rem);}
+
+  /* SECTIONS */
+  section{padding:80px 5%;}
+  .sec-h{font-size:clamp(2.2rem,8vw,3.2rem);}
+  .sec-num{font-size:7rem;top:40px;}
+  .sec-hdr{margin-bottom:48px;}
+
+  /* SERVICES */
+  .srv-grid{grid-template-columns:1fr;}
+  .srv-card{padding:30px 24px;}
+
+  /* TEAM */
+  .team-grid{grid-template-columns:1fr;}
+  .team-av{height:240px;}
+
+  /* TESTIMONIALS */
+  .test-grid{grid-template-columns:1fr;}
+  .test-card{padding:30px 24px;}
+
+  /* TRUST */
+  .trust-wrap{padding:28px 5%;}
+  .trust-num{font-size:3.5rem;}
+  .trust-inner{flex-direction:column;gap:20px;}
+  .trust-cta{width:100%;text-align:center;padding:14px;}
+
+  /* POPUP */
+  #pop-box{padding:40px 24px;}
+  #pop-box h2{font-size:2.2rem;}
+
+  /* CONTACT */
+  .soc-row{flex-wrap:wrap;}
+  .con-info h2{font-size:2.4rem;}
+
+  /* FOOTER */
+  .foot-inner{flex-direction:column;text-align:center;gap:16px;}
+  .foot-links{justify-content:center;}
+
+  /* MARQUEE */
+  .mq-item{padding:0 24px;font-size:.7rem;}
+
+  /* DOT DIVS */
+  .dot-div{padding:16px 0;}
+
+  /* FLOAT BADGE */
+  #fbadge{bottom:20px;right:16px;padding:11px 18px;font-size:.78rem;}
+  #toast{right:16px;bottom:90px;max-width:calc(100vw - 32px);}
 }
+
+@media(max-width:480px){
+  .hero-h1{font-size:clamp(2.8rem,12vw,4rem);}
+  .h-stat{gap:3px;}
+  .h-stat-n{font-size:1.7rem;}
+  #plant-wrap{transform:translateX(-50%) scale(0.7);}
+  .fruit-el{font-size:1.6rem !important;}
+}
+
+    /* ══ FRUIT SCENE ══ */
+    #fruit-scene{position:relative;height:450vh;z-index:2;}
+    #fruit-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--black);}
+    #fruit-bg{position:absolute;inset:0;transition:background 1.5s ease;background:radial-gradient(ellipse 80% 70% at 50% 50%,rgba(76,175,80,.12) 0%,transparent 70%);}
+
+    /* Fruit emojis floating */
+    .fruit-el{
+      position:absolute;
+      font-size:clamp(2rem,4vw,3.2rem);
+      animation:fruitFloat ease-in-out infinite;
+      opacity:0;
+      transition:opacity .6s ease;
+      filter:drop-shadow(0 0 12px rgba(76,175,80,.5));
+      user-select:none;
+    }
+    .fruit-el.vis{opacity:1;}
+    @keyframes fruitFloat{
+      0%,100%{transform:translateY(0) rotate(0deg) scale(1);}
+      25%{transform:translateY(-18px) rotate(5deg) scale(1.05);}
+      75%{transform:translateY(10px) rotate(-4deg) scale(0.97);}
+    }
+
+    /* Rain of fruits */
+    .fruit-rain{
+      position:absolute;
+      font-size:clamp(1.4rem,3vw,2.2rem);
+      animation:fruitRain linear forwards;
+      opacity:.85;
+      user-select:none;
+      pointer-events:none;
+    }
+    @keyframes fruitRain{
+      0%{transform:translateY(-80px) rotate(0deg);opacity:0;}
+      10%{opacity:.9;}
+      90%{opacity:.7;}
+      100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+    }
+
+    /* Fruit panels */
+    .fruit-panel{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      flex-direction:column;text-align:center;
+      padding:0 6%;
+      opacity:0;pointer-events:none;
+      transition:opacity .7s ease;
+    }
+    .fruit-panel.fon{opacity:1;pointer-events:auto;}
+    .fruit-panel .g-h{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(3rem,7vw,6rem);
+      line-height:.92;margin-bottom:20px;
+      transform:translateY(40px);
+      transition:transform .8s cubic-bezier(.34,1.56,.64,1) .1s;
+    }
+    .fruit-panel.fon .g-h{transform:translateY(0);}
+    .fruit-panel .g-p{
+      font-size:.95rem;color:var(--gray);line-height:1.8;
+      max-width:520px;margin:0 auto 32px;
+      transform:translateY(20px);
+      transition:transform .7s ease .3s;
+    }
+    .fruit-panel.fon .g-p{transform:translateY(0);}
+
+    /* Big fruit showcase */
+    .fruit-showcase{
+      display:flex;align-items:center;justify-content:center;
+      gap:clamp(12px,3vw,36px);
+      flex-wrap:wrap;margin-bottom:32px;
+      opacity:0;transform:scale(.8);
+      transition:opacity .7s ease .2s,transform .7s cubic-bezier(.34,1.56,.64,1) .2s;
+    }
+    .fruit-panel.fon .fruit-showcase{opacity:1;transform:scale(1);}
+    .fruit-big{
+      font-size:clamp(3rem,8vw,6rem);
+      animation:fbig 3s ease-in-out infinite;
+      filter:drop-shadow(0 0 20px rgba(76,175,80,.6));
+    }
+    .fruit-big:nth-child(2){animation-delay:.4s;}
+    .fruit-big:nth-child(3){animation-delay:.8s;}
+    .fruit-big:nth-child(4){animation-delay:1.2s;}
+    .fruit-big:nth-child(5){animation-delay:1.6s;}
+    @keyframes fbig{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.08)}}
+
+    /* Service fruit cards */
+    .fruit-cards{
+      display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:8px;
+      opacity:0;transform:translateY(30px);
+      transition:opacity .7s ease .4s,transform .7s ease .4s;
+    }
+    .fruit-panel.fon .fruit-cards{opacity:1;transform:translateY(0);}
+    .fruit-card{
+      background:rgba(76,175,80,.08);border:1px solid rgba(76,175,80,.2);
+      border-radius:12px;padding:14px 20px;
+      display:flex;align-items:center;gap:10px;
+      font-size:.82rem;font-weight:800;color:var(--green2);
+      letter-spacing:.04em;
+      transition:border-color .2s,background .2s,transform .2s;
+    }
+    .fruit-card:hover{border-color:var(--green);background:rgba(76,175,80,.14);transform:translateY(-3px);}
+    .fruit-card span{font-size:1.4rem;}
+
+    /* Fruit nav dots */
+    #fruit-dots{position:absolute;right:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:20;}
+    .fdot{width:5px;height:5px;border-radius:50%;background:rgba(76,175,80,.2);border:1px solid rgba(76,175,80,.3);transition:all .3s;}
+    .fdot.on{height:20px;border-radius:3px;background:var(--green);box-shadow:0 0 10px var(--green);}
+
+    /* Falling leaves bg */
+    .leaf-bg{position:absolute;font-size:1.2rem;opacity:.15;animation:leafFall linear infinite;pointer-events:none;user-select:none;}
+    @keyframes leafFall{0%{transform:translateY(-40px) rotate(0deg);opacity:0;}10%{opacity:.15;}90%{opacity:.1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+
 </style>
 </head>
 <body>
@@ -552,6 +757,79 @@ footer{background:#020408;border-top:1px solid var(--border);padding:60px 5% 40p
     <div id="g-par-wrap"></div>
   </div>
 </div>
+
+
+<!-- ═══ FRUIT HARVEST SCENE ═══ -->
+<div id="fruit-scene">
+  <div id="fruit-sticky">
+    <div id="fruit-bg"></div>
+
+    <!-- Background falling leaves -->
+    <div id="leaf-wrap"></div>
+
+    <!-- Floating fruits in background -->
+    <div id="bg-fruits"></div>
+
+    <!-- PANEL 0: Fruits appear on tree -->
+    <div class="fruit-panel fon" id="fp0">
+      <div class="fruit-showcase">
+        <span class="fruit-big">🍑</span>
+        <span class="fruit-big">🍋</span>
+        <span class="fruit-big">🍎</span>
+        <span class="fruit-big">🍊</span>
+        <span class="fruit-big">🍇</span>
+      </div>
+      <h2 class="g-h">Your Tree<br/><span class="grad-text">Bears</span><br/>Fruit</h2>
+      <p class="g-p">After all the hard work, growth, and nurturing — your Shopify store starts producing real, juicy results. Revenue. Sales. Freedom.</p>
+    </div>
+
+    <!-- PANEL 1: What the fruits represent -->
+    <div class="fruit-panel" id="fp1">
+      <h2 class="g-h">The <span class="grad-text">Fruits</span><br/>Of Success</h2>
+      <p class="g-p">Every fruit represents a reward your store delivers. This is what we help you harvest with ShopifySuccessHub.</p>
+      <div class="fruit-cards">
+        <div class="fruit-card"><span>🍑</span>Passive Income</div>
+        <div class="fruit-card"><span>🍋</span>More Customers</div>
+        <div class="fruit-card"><span>🍎</span>7-Figure Revenue</div>
+        <div class="fruit-card"><span>🍊</span>Financial Freedom</div>
+        <div class="fruit-card"><span>🍇</span>Time Freedom</div>
+        <div class="fruit-card"><span>💰</span>Profit Growth</div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: Rain of fruits - celebration -->
+    <div class="fruit-panel" id="fp2">
+      <div style="font-size:clamp(3rem,10vw,6rem);margin-bottom:16px;animation:fbig 2s ease-in-out infinite;">🎉</div>
+      <h2 class="g-h"><span class="grad-text">20,000+</span><br/>Stores<br/>Harvested</h2>
+      <p class="g-p">Over 20,000 entrepreneurs have gone from seed to full harvest with ShopifySuccessHub. You are next.</p>
+      <div id="fruit-rain-wrap"></div>
+    </div>
+
+    <!-- PANEL 3: Call to action -->
+    <div class="fruit-panel" id="fp3">
+      <h2 class="g-h">Ready To<br/><span class="grad-text">Harvest</span><br/>Your Fruits?</h2>
+      <p class="g-p">Plant your seed today. We will grow it into a thriving Shopify store that bears fruit for years to come. Claim your free audit now — it costs nothing.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+        <button onclick="openPop()" style="background:linear-gradient(135deg,#1b5e20,#4caf50);color:#fff;border:none;padding:18px 42px;border-radius:50px;font-family:'Manrope',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;letter-spacing:.06em;box-shadow:0 0 50px rgba(76,175,80,.5);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform=''">
+          🍑 Claim Free Audit
+        </button>
+        <a href="#services" style="background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.15);padding:18px 42px;border-radius:50px;font-family:'Manrope',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.04em;text-decoration:none;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
+          View Services
+        </a>
+      </div>
+    </div>
+
+    <!-- Nav dots -->
+    <div id="fruit-dots">
+      <div class="fdot on"></div>
+      <div class="fdot"></div>
+      <div class="fdot"></div>
+      <div class="fdot"></div>
+    </div>
+
+  </div>
+</div>
+<!-- END FRUIT SCENE -->
 
 <!-- MARQUEE -->
 <div class="marquee-wrap">
@@ -959,6 +1237,82 @@ document.getElementById('fbtn').addEventListener('click',async function(){
     else throw 0;
   }catch{this.textContent='❌ Failed. Try again.';this.disabled=false;setTimeout(()=>{this.textContent='Send Message →';},2500);}
 });
+
+
+  // ══ FRUIT HARVEST SCENE ══
+  (function(){
+    const scene = document.getElementById('fruit-scene');
+    if(!scene) return;
+    const panels = document.querySelectorAll('.fruit-panel');
+    const fdots  = document.querySelectorAll('.fdot');
+    const fbg    = document.getElementById('fruit-bg');
+    const bgFruits = document.getElementById('bg-fruits');
+    const leafWrap = document.getElementById('leaf-wrap');
+    const FRUITS = ['🍑','🍋','🍎','🍊','🍇','🍓','🥭','🍒','🫐'];
+    const LEAVES = ['🍃','🌿','🍀','🌱'];
+    const BG_DATA = [
+      'radial-gradient(ellipse 80% 70% at 50% 50%,rgba(76,175,80,.12) 0%,transparent 70%)',
+      'radial-gradient(ellipse 90% 80% at 50% 50%,rgba(76,175,80,.18) 0%,transparent 70%)',
+      'radial-gradient(ellipse 100% 90% at 50% 50%,rgba(76,175,80,.25) 0%,transparent 70%)',
+      'radial-gradient(ellipse 110% 100% at 50% 50%,rgba(76,175,80,.32) 0%,transparent 70%)',
+    ];
+    function spawnBgFruits(count){
+      bgFruits.innerHTML='';
+      for(let i=0;i<count;i++){
+        const el=document.createElement('div');
+        el.className='fruit-el';
+        el.textContent=FRUITS[Math.floor(Math.random()*FRUITS.length)];
+        el.style.cssText=`left:${Math.random()*88+4}%;top:${Math.random()*78+6}%;animation-duration:${Math.random()*3+2.5}s;animation-delay:${Math.random()*2}s;font-size:clamp(1.4rem,3vw,2.5rem);z-index:3;position:absolute;`;
+        bgFruits.appendChild(el);
+        setTimeout(()=>el.classList.add('vis'),60+i*80);
+      }
+    }
+    function spawnLeaves(){
+      leafWrap.innerHTML='';
+      for(let i=0;i<14;i++){
+        const el=document.createElement('div');
+        el.className='leaf-bg';
+        el.textContent=LEAVES[Math.floor(Math.random()*LEAVES.length)];
+        el.style.cssText=`left:${Math.random()*100}%;animation-duration:${Math.random()*6+5}s;animation-delay:${Math.random()*5}s;font-size:${Math.random()*1+.8}rem;`;
+        leafWrap.appendChild(el);
+      }
+    }
+    spawnLeaves();
+    let rainInt=null;
+    function startRain(){
+      if(rainInt)return;
+      const sticky=document.getElementById('fruit-sticky');
+      rainInt=setInterval(()=>{
+        const el=document.createElement('div');
+        el.className='fruit-rain';
+        el.textContent=FRUITS[Math.floor(Math.random()*FRUITS.length)];
+        const dur=Math.random()*3+2;
+        el.style.cssText=`left:${Math.random()*100}%;top:-60px;animation-duration:${dur}s;font-size:${Math.random()*1.5+1.2}rem;`;
+        sticky.appendChild(el);
+        setTimeout(()=>el.remove(),dur*1000+100);
+      },180);
+    }
+    function stopRain(){clearInterval(rainInt);rainInt=null;}
+    let curP=-1;
+    function goPanel(idx){
+      if(idx===curP)return;curP=idx;
+      panels.forEach((p,i)=>p.classList.toggle('fon',i===idx));
+      fdots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+      fbg.style.background=BG_DATA[idx];
+      spawnBgFruits(5+idx*5);
+      if(idx===2)startRain();else stopRain();
+    }
+    function onScroll(){
+      const rect=scene.getBoundingClientRect();
+      const scrolled=-rect.top;
+      const total=scene.offsetHeight-window.innerHeight;
+      const pct=Math.max(0,Math.min(1,scrolled/total));
+      goPanel(Math.min(3,Math.floor(pct*4)));
+    }
+    fbg.style.transition='background 1.5s ease';
+    window.addEventListener('scroll',onScroll,{passive:true});
+    goPanel(0);
+  })();
 
 // ── SERVICE CARD GLOW ──
 document.querySelectorAll('.srv-card').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',(e.clientX-r.left)/r.width*100+'%');card.style.setProperty('--my',(e.clientY-r.top)/r.height*100+'%');});});
